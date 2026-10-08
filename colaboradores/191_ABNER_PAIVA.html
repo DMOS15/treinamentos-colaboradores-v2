@@ -23,7 +23,20 @@ fetch('../dados.json')
 );
 
 const info = colaborador[0];
+let treinamentosHTML = "";
 
+colaborador.forEach(item => {
+
+    treinamentosHTML += `
+        <tr>
+            <td>${item.TREINAMENTO}</td>
+            <td>${item.TREINADO_EM}</td>
+            <td>${item.VENCE_EM}</td>
+            <td>${item.STATUS}</td>
+        </tr>
+    `;
+
+});
 document.getElementById("resultado").innerHTML = `
 
 <h2>${info.COLABORADOR_EXIBICAO}</h2>
@@ -43,6 +56,25 @@ document.getElementById("resultado").innerHTML = `
 <hr>
 
 <h3>Treinamentos</h3>
+
+<table border="1" cellpadding="5">
+
+<thead>
+<tr>
+    <th>Treinamento</th>
+    <th>Treinado em</th>
+    <th>Vence em</th>
+    <th>Status</th>
+</tr>
+</thead>
+
+<tbody>
+
+${treinamentosHTML}
+
+</tbody>
+
+</table>
 
 `;
 
