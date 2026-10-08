@@ -22,7 +22,29 @@ body{
     margin-bottom:20px;
     box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
+.info-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
 
+.info-item{
+    display:flex;
+    flex-direction:column;
+}
+
+.info-item span{
+    font-size:11px;
+    text-transform:uppercase;
+    color:#8b7355;
+    font-weight:700;
+    margin-bottom:5px;
+}
+
+.info-item strong{
+    font-size:15px;
+    color:#2b1d13;
+}
 .section{
     background:white;
     padding:20px;
@@ -146,15 +168,31 @@ const colaborador = dados.filter(
 
     <div class="card">
 
-        <h1>${info.COLABORADOR_EXIBICAO}</h1>
+    <div class="info-grid">
 
-        <p><b>Cargo:</b> ${info.CARGO}</p>
+        <div class="info-item">
+            <span>Nome</span>
+            <strong>${info.COLABORADOR_EXIBICAO}</strong>
+        </div>
 
-        <p><b>Área:</b> ${info.AREA}</p>
+        <div class="info-item">
+            <span>Cargo</span>
+            <strong>${info.CARGO}</strong>
+        </div>
 
-        <p><b>Coordenador:</b> ${info.COORDENADOR}</p>
+        <div class="info-item">
+            <span>Área</span>
+            <strong>${info.AREA}</strong>
+        </div>
+
+        <div class="info-item">
+            <span>Coordenador</span>
+            <strong>${info.COORDENADOR}</strong>
+        </div>
 
     </div>
+
+</div>
 
     <div class="section">
 
