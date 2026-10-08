@@ -19,13 +19,29 @@ fetch('../dados.json')
 .then(dados => {
 
     const colaborador = dados.filter(
-        x => x.IDFIXO === "191"
-    );
+    x => x.IDFIXO === "191"
+);
 
-    document.getElementById("resultado").innerHTML =
-        "<pre>" +
-        JSON.stringify(colaborador, null, 2) +
-        "</pre>";
+const info = colaborador[0];
+
+document.getElementById("resultado").innerHTML = `
+    <h2>${info.COLABORADOR_EXIBICAO}</h2>
+
+    <p>
+        <b>Cargo:</b> ${info.CARGO}
+    </p>
+
+    <p>
+        <b>Área:</b> ${info.AREA}
+    </p>
+
+    <p>
+        <b>Coordenador:</b> ${info.COORDENADOR}
+    </p>
+
+    <hr>
+
+    <h3>Treinamentos</h3>;
 
 });
 
