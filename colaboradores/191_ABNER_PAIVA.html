@@ -1,82 +1,214 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 
 <head>
 <meta charset="UTF-8">
-<title>Teste JSON</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>SHE Nexus V2</title>
+
+<style>
+
+body{
+    font-family: Arial, sans-serif;
+    margin:20px;
+    background:#f5f5f5;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.section{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#3b2a1d;
+    color:white;
+    padding:10px;
+}
+
+td{
+    padding:10px;
+    border-bottom:1px solid #ddd;
+}
+
+.badge{
+    padding:4px 10px;
+    border-radius:15px;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.ok{
+    background:#c8e6d9;
+    color:#1e6f3f;
+}
+
+.vencido{
+    background:#f5d1d1;
+    color:#b32d2d;
+}
+
+.pendente{
+    background:#fff3cd;
+    color:#856404;
+}
+
+</style>
+
 </head>
 
 <body>
-
-<h1>Teste SHE Nexus JSON</h1>
 
 <div id="resultado"></div>
 
 <script>
 
 fetch('../dados.json')
+
 .then(response => response.json())
+
 .then(dados => {
 
     const colaborador = dados.filter(
-    x => x.IDFIXO === "191"
-);
+        x => x.IDFIXO === "191"
+    );
 
-const info = colaborador[0];
-let treinamentosHTML = "";
+    const info = colaborador[0];
 
-colaborador.forEach(item => {
+    let obrigatoriosHTML = "";
 
-    treinamentosHTML += `
-        <tr>
-            <td>${item.TREINAMENTO}</td>
-            <td>${item.TREINADO_EM}</td>
-            <td>${item.VENCE_EM}</td>
-            <td>${item.STATUS}</td>
-        </tr>
+    let normativosHTML = "";
+
+    colaborador.forEach(item => {
+
+        let classeStatus = "";
+
+        if(item.STATUS === "NO PRAZO"){
+            classeStatus = "ok";
+        }
+
+        else if(item.STATUS === "VENCIDO"){
+            classeStatus = "vencido";
+        }
+
+        else{
+            classeStatus = "pendente";
+        }
+
+        const linha = `
+            <tr>
+                <td>${item.TREINAMENTO}</td>
+                <td>${item.TREINADO_EM}</td>
+                <td>${item.VENCE_EM}</td>
+                <td>
+                    <span class="badge ${classeStatus}">
+                        ${item.STATUS}
+                    </span>
+                </td>
+            </tr>
+        `;
+
+        if(item.TIPO_TREINAMENTO === "NORM"){
+
+            normativosHTML += linha;
+
+        } else {
+
+            obrigatoriosHTML += linha;
+
+        }
+
+    });
+
+    document.getElementById("resultado").innerHTML = `
+
+    <div class="card">
+
+        <h1>${info.COLABORADOR_EXIBICAO}</h1>
+
+        <p><b>Cargo:</b> ${info.CARGO}</p>
+
+        <p><b>Área:</b> ${info.AREA}</p>
+
+        <p><b>Coordenador:</b> ${info.COORDENADOR}</p>
+
+    </div>
+
+    <div class="section">
+
+        <h2>📚 Treinamentos Normativos</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Treinamento</th>
+                    <th>Treinado em</th>
+                    <th>Vence em</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${normativosHTML}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <div class="section">
+
+        <h2>📌 Treinamentos Obrigatórios</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Treinamento</th>
+                    <th>Treinado em</th>
+                    <th>Vence em</th>
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                ${obrigatoriosHTML}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
     `;
-
-});
-document.getElementById("resultado").innerHTML = `
-
-<h2>${info.COLABORADOR_EXIBICAO}</h2>
-
-<p>
-  <b>Cargo:</b> ${info.CARGO}
-</p>
-
-<p>
-  <b>Área:</b> ${info.AREA}
-</p>
-
-<p>
-  <b>Coordenador:</b> ${info.COORDENADOR}
-</p>
-
-<hr>
-
-<h3>Treinamentos</h3>
-
-<table border="1" cellpadding="5">
-
-<thead>
-<tr>
-    <th>Treinamento</th>
-    <th>Treinado em</th>
-    <th>Vence em</th>
-    <th>Status</th>
-</tr>
-</thead>
-
-<tbody>
-
-${treinamentosHTML}
-
-</tbody>
-
-</table>
-
-`;
 
 });
 
