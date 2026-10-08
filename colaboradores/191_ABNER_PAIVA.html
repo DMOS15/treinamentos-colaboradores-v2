@@ -85,9 +85,15 @@ fetch('../dados.json')
 
 .then(dados => {
 
-    const colaborador = dados.filter(
-        x => x.IDFIXO === "191"
-    );
+    const arquivo = window.location.pathname
+    .split('/')
+    .pop();
+
+const idfixo = arquivo.split('_')[0];
+
+const colaborador = dados.filter(
+    x => x.IDFIXO === idfixo
+);
 
     const info = colaborador[0];
 
