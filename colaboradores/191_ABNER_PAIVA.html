@@ -25,23 +25,26 @@ fetch('../dados.json')
 const info = colaborador[0];
 
 document.getElementById("resultado").innerHTML = `
-    <h2>${info.COLABORADOR_EXIBICAO}</h2>
 
-    <p>
-        <b>Cargo:</b> ${info.CARGO}
-    </p>
+<h2>${info.COLABORADOR_EXIBICAO}</h2>
 
-    <p>
-        <b>Área:</b> ${info.AREA}
-    </p>
+<p>
+  <b>Cargo:</b> ${info.CARGO}
+</p>
 
-    <p>
-        <b>Coordenador:</b> ${info.COORDENADOR}
-    </p>
+<p>
+  <b>Área:</b> ${info.AREA}
+</p>
 
-    <hr>
+<p>
+  <b>Coordenador:</b> ${info.COORDENADOR}
+</p>
 
-    <h3>Treinamentos</h3>;
+<hr>
+
+<h3>Treinamentos</h3>
+
+`;
 
 });
 
