@@ -72,6 +72,9 @@ body{
     font-size:15px;
     color:#2b1d13;
 }
+    .stats strong{
+    font-size:28px;
+}
 .section{
     background:white;
     padding:20px;
@@ -104,19 +107,20 @@ td{
 }
 
 .ok{
-    background:#c8e6d9;
-    color:#1e6f3f;
+    background:#bedfc9;
+    color:#1f7c4e;
 }
 
 .vencido{
-    background:#f5d1d1;
-    color:#b32d2d;
+    background:#f4c7c7;
+    color:#a72323;
 }
 
 .pendente{
-    background:#fff3cd;
-    color:#856404;
+    background:#f8e8b7;
+    color:#846000;
 }
+    
     .filters{
     background:white;
     padding:20px;
@@ -170,8 +174,7 @@ td{
     <h1>📋 Treinamentos · Colaborador</h1>
 
     ../index.html
-    ← Voltar à lista
-</a>
+        ← Voltar à lista
     </a>
 
 </div>
@@ -313,26 +316,26 @@ else{
 
     <div class="info-grid">
 
-        <div class="info-item">
+        <div class="info-item stats">
             <span>Total</span>
             <strong>${quantidadeTreinamentos}</strong>
         </div>
 
-        <div class="info-item">
+        <div class="info-item stats">
             <span>No Prazo</span>
             <strong style="color:#1e6f3f">
                 ${totalNoPrazo}
             </strong>
         </div>
 
-        <div class="info-item">
+        <div class="info-item stats">
             <span>Vencidos</span>
             <strong style="color:#b32d2d">
                 ${totalVencidos}
             </strong>
         </div>
 
-        <div class="info-item">
+        <div class="info-item stats">
             <span>Pendentes</span>
             <strong style="color:#856404">
                 ${totalPendentes}
@@ -385,8 +388,6 @@ else{
 </div>
 
 <div class="section">
-
-    <div class="section">
 
         <h2>📚 Treinamentos Normativos (${totalNormativos})</h2>
 
