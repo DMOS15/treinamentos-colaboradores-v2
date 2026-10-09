@@ -90,6 +90,47 @@ td{
     background:#fff3cd;
     color:#856404;
 }
+    .filters{
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    margin-bottom:20px;
+    display:flex;
+    gap:15px;
+    align-items:end;
+    flex-wrap:wrap;
+    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.filter-group{
+    display:flex;
+    flex-direction:column;
+}
+
+.filter-group label{
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    color:#8b7355;
+    margin-bottom:5px;
+}
+
+.filter-group input,
+.filter-group select{
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    min-width:220px;
+}
+
+.btn-limpar{
+    padding:10px 15px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#d8d0c6;
+    font-weight:bold;
+}
 
 </style>
 
@@ -214,6 +255,49 @@ const quantidadeTreinamentos = colaborador.length;
     </div>
 
 </div>
+</div>
+
+<div class="filters">
+
+    <div class="filter-group">
+
+        <label>Buscar treinamento</label>
+
+        <input
+            type="text"
+            id="filtroTreinamento"
+            placeholder="Digite o treinamento..."
+        >
+
+    </div>
+
+    <div class="filter-group">
+
+        <label>Status</label>
+
+        <select id="filtroStatus">
+
+            <option value="">Todos</option>
+
+            <option value="NO PRAZO">NO PRAZO</option>
+
+            <option value="VENCIDO">VENCIDO</option>
+
+            <option value="PENDENTE">PENDENTE</option>
+
+        </select>
+
+    </div>
+
+    <button class="btn-limpar" id="btnLimpar">
+
+        Limpar
+
+    </button>
+
+</div>
+
+<div class="section">
 
     <div class="section">
 
