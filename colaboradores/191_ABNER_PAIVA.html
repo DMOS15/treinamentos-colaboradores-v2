@@ -10,10 +10,33 @@
 <style>
 
 body{
-    font-family: Arial, sans-serif;
-    margin:20px;
-    background:#f5f5f5;
+    margin:0;
+    font-family:'Segoe UI', Arial, sans-serif;
+    background:#f5efe6;
 }
+    .header{
+    background:linear-gradient(
+        90deg,
+        #2b1d13,
+        #4a3021
+    );
+
+    color:white;
+
+    padding:20px;
+}
+
+.header h1{
+    margin:0;
+    font-size:28px;
+}
+
+.header a{
+    color:#ffd6a8;
+    text-decoration:none;
+    font-size:14px;
+}
+
 
 .card{
     background:white;
@@ -26,6 +49,10 @@ body{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:20px;
+}
+    
+#resultado{
+    padding:25px;
 }
 
 .info-item{
@@ -137,6 +164,16 @@ td{
 </head>
 
 <body>
+
+<div class="header">
+
+    <h1>📋 Treinamentos · Colaborador</h1>
+
+    ../index.html
+        ← Voltar à lista
+    </a>
+
+</div>
 
 <div id="resultado"></div>
 
