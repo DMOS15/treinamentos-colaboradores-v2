@@ -122,8 +122,10 @@ const quantidadeTreinamentos = colaborador.length;
     const info = colaborador[0];
 
     let obrigatoriosHTML = "";
-
     let normativosHTML = "";
+
+    let totalObrigatorios = 0;
+   let totalNormativos = 0;
 
     colaborador.forEach(item => {
 
@@ -156,13 +158,15 @@ const quantidadeTreinamentos = colaborador.length;
 
         if(item.TIPO_TREINAMENTO === "NORM"){
 
-            normativosHTML += linha;
+    normativosHTML += linha;
+    totalNormativos++;
 
-        } else {
+} else {
 
-            obrigatoriosHTML += linha;
+    obrigatoriosHTML += linha;
+    totalObrigatorios++;
 
-        }
+}
 
     });
 
@@ -213,7 +217,7 @@ const quantidadeTreinamentos = colaborador.length;
 
     <div class="section">
 
-        <h2>📚 Treinamentos Normativos</h2>
+        <h2>📚 Treinamentos Normativos (${totalNormativos})</h2>
 
         <table>
 
@@ -242,7 +246,7 @@ const quantidadeTreinamentos = colaborador.length;
 
     <div class="section">
 
-        <h2>📌 Treinamentos Obrigatórios</h2>
+        <h2>📌 Treinamentos Obrigatórios (${totalObrigatorios})</h2>
 
         <table>
 
