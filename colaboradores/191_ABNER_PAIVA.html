@@ -170,7 +170,8 @@ td{
     <h1>📋 Treinamentos · Colaborador</h1>
 
     ../index.html
-        ← Voltar à lista
+    ← Voltar à lista
+</a>
     </a>
 
 </div>
@@ -204,11 +205,27 @@ const quantidadeTreinamentos = colaborador.length;
 
     let totalObrigatorios = 0;
    let totalNormativos = 0;
+    
+    let totalNoPrazo = 0;
+let totalVencidos = 0;
+let totalPendentes = 0;
 
     colaborador.forEach(item => {
 
         let classeStatus = "";
 
+        if(item.STATUS === "NO PRAZO"){
+    totalNoPrazo++;
+}
+
+else if(item.STATUS === "VENCIDO"){
+    totalVencidos++;
+}
+
+else{
+    totalPendentes++;
+}
+        
         if(item.STATUS === "NO PRAZO"){
             classeStatus = "ok";
         }
@@ -292,6 +309,39 @@ const quantidadeTreinamentos = colaborador.length;
     </div>
 
 </div>
+<div class="card">
+
+    <div class="info-grid">
+
+        <div class="info-item">
+            <span>Total</span>
+            <strong>${quantidadeTreinamentos}</strong>
+        </div>
+
+        <div class="info-item">
+            <span>No Prazo</span>
+            <strong style="color:#1e6f3f">
+                ${totalNoPrazo}
+            </strong>
+        </div>
+
+        <div class="info-item">
+            <span>Vencidos</span>
+            <strong style="color:#b32d2d">
+                ${totalVencidos}
+            </strong>
+        </div>
+
+        <div class="info-item">
+            <span>Pendentes</span>
+            <strong style="color:#856404">
+                ${totalPendentes}
+            </strong>
+        </div>
+
+    </div>
+
+</div>
 </div>
 
 <div class="filters">
@@ -357,7 +407,19 @@ const quantidadeTreinamentos = colaborador.length;
 
             <tbody>
 
-                ${normativosHTML}
+                ${normativosHTML || `
+<tr>
+<td colspan="4"
+style="
+text-align:center;
+padding:20px;
+color:#8b7355;
+font-style:italic;
+">
+Nenhum treinamento normativo encontrado.
+</td>
+</tr>
+`}
 
             </tbody>
 
@@ -386,7 +448,19 @@ const quantidadeTreinamentos = colaborador.length;
 
             <tbody>
 
-                ${obrigatoriosHTML}
+                ${obrigatoriosHTML || `
+<tr>
+<td colspan="4"
+style="
+text-align:center;
+padding:20px;
+color:#8b7355;
+font-style:italic;
+">
+Nenhum treinamento obrigatório encontrado.
+</td>
+</tr>
+`}
 
             </tbody>
 
