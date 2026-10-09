@@ -358,7 +358,68 @@ const quantidadeTreinamentos = colaborador.length;
     </div>
 
     `;
+function aplicarFiltros() {
 
+    const textoBusca =
+        document.getElementById("filtroTreinamento")
+        .value
+        .toLowerCase();
+
+    const statusSelecionado =
+        document.getElementById("filtroStatus")
+        .value;
+
+    const linhas = document.querySelectorAll("tbody tr");
+
+    linhas.forEach(linha => {
+
+        const treinamento =
+            linha.cells[0].innerText.toLowerCase();
+
+        const status =
+            linha.cells[3].innerText.trim();
+
+        const atendeTreinamento =
+            treinamento.includes(textoBusca);
+
+        const atendeStatus =
+            statusSelecionado === ""
+            ||
+            status === statusSelecionado;
+
+        if(atendeTreinamento && atendeStatus){
+
+            linha.style.display = "";
+
+        }
+        else{
+
+            linha.style.display = "none";
+
+        }
+
+    });
+
+}
+    document
+.getElementById("filtroTreinamento")
+.addEventListener("input", aplicarFiltros);
+
+document
+.getElementById("filtroStatus")
+.addEventListener("change", aplicarFiltros);
+
+    document
+.getElementById("btnLimpar")
+.addEventListener("click", () => {
+
+    document.getElementById("filtroTreinamento").value = "";
+
+    document.getElementById("filtroStatus").value = "";
+
+    aplicarFiltros();
+
+});
 });
 
 </script>
