@@ -1,14 +1,189 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>SHE Nexus V2</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>SHE Nexus V2 | Colaboradores</title>
+	<link rel="stylesheet" href="./styles.css">
 </head>
-
 <body>
+	<header class="header">
+		<div class="header-inner">
+			<h1>SHE Nexus V2 · Treinamentos</h1>
+		</div>
+	</header>
 
-<h1>SHE Nexus V2</h1>
+	<main class="directory-main">
+		<section aria-labelledby="directoryTitle">
+			<div class="directory-heading">
+				<div>
+					<h2 id="directoryTitle">Colaboradores</h2>
+					<p class="directory-summary" id="directorySummary" aria-live="polite">Carregando dados...</p>
+				</div>
+				<div class="filter-group directory-sort">
+					<label for="sortOrder">Ordenar por nome</label>
+					<select id="sortOrder">
+						<option value="az">A-Z</option>
+						<option value="za">Z-A</option>
+					</select>
+				</div>
+			</div>
 
+			<div class="filters directory-filters" aria-label="Filtros de colaboradores">
+				<div class="filter-group">
+					<label for="nameSearch">Buscar por nome</label>
+					<input id="nameSearch" type="search" placeholder="Digite um nome..." autocomplete="off">
+				</div>
+				<div class="filter-group">
+					<label for="areaFilter">Área</label>
+					<select id="areaFilter">
+						<option value="">Todas as áreas</option>
+					</select>
+				</div>
+				<div class="filter-group">
+					<label for="coordinatorFilter">Coordenador</label>
+					<select id="coordinatorFilter">
+						<option value="">Todos os coordenadores</option>
+					</select>
+				</div>
+			</div>
+
+			<p class="directory-status" id="directoryStatus" role="status"></p>
+			<div class="directory-grid" id="employeeList" aria-live="polite"></div>
+		</section>
+	</main>
+
+	<script>
+		const nameSearch = document.getElementById("nameSearch");
+		const areaFilter = document.getElementById("areaFilter");
+		const coordinatorFilter = document.getElementById("coordinatorFilter");
+		const sortOrder = document.getElementById("sortOrder");
+		const employeeList = document.getElementById("employeeList");
+		const directorySummary = document.getElementById("directorySummary");
+		const directoryStatus = document.getElementById("directoryStatus");
+		const collator = new Intl.Collator("pt-BR", { sensitivity: "base" });
+		let colaboradores = [];
+
+		function normalizarTexto(valor) {
+			return String(valor || "").trim().toLocaleLowerCase("pt-BR");
+		}
+
+		function preencherFiltro(select, valores, rotuloInicial) {
+			const fragmento = document.createDocumentFragment();
+			fragmento.append(new Option(rotuloInicial, ""));
+
+			[...new Set(valores.filter(Boolean))]
+				.sort((a, b) => collator.compare(a, b))
+				.forEach(valor => fragmento.append(new Option(valor, valor)));
+
+			select.replaceChildren(fragmento);
+		}
+
+		function criarLinkColaborador(colaborador) {
+			const link = document.createElement("a");
+			const arquivo = colaborador.NOME_ARQUIVO.trim();
+			const arquivoHtml = arquivo.toLocaleLowerCase("pt-BR").endsWith(".html")
+				? arquivo
+				: `${arquivo}.html`;
+
+			link.href = `./colaboradores/${encodeURIComponent(arquivoHtml)}`;
+			link.textContent = colaborador.COLABORADOR_EXIBICAO || "Nome não informado";
+			return link;
+		}
+
+		function criarCardColaborador(colaborador) {
+			const card = document.createElement("article");
+			const titulo = document.createElement("h3");
+			const detalhes = document.createElement("dl");
+
+			card.className = "card employee-card";
+			titulo.append(criarLinkColaborador(colaborador));
+			detalhes.className = "employee-details";
+
+			[["Área", colaborador.AREA], ["Coordenador", colaborador.COORDENADOR]]
+				.forEach(([rotulo, valor]) => {
+					const grupo = document.createElement("div");
+					const termo = document.createElement("dt");
+					const definicao = document.createElement("dd");
+
+					termo.textContent = rotulo;
+					definicao.textContent = valor || "Não informado";
+					grupo.append(termo, definicao);
+					detalhes.append(grupo);
+				});
+
+			card.append(titulo, detalhes);
+			return card;
+		}
+
+		function renderizarColaboradores() {
+			const busca = normalizarTexto(nameSearch.value);
+			const areaSelecionada = areaFilter.value;
+			const coordenadorSelecionado = coordinatorFilter.value;
+			const direcao = sortOrder.value === "za" ? -1 : 1;
+
+			const filtrados = colaboradores
+				.filter(colaborador => {
+					return normalizarTexto(colaborador.COLABORADOR_EXIBICAO).includes(busca)
+						&& (!areaSelecionada || colaborador.AREA === areaSelecionada)
+						&& (!coordenadorSelecionado || colaborador.COORDENADOR === coordenadorSelecionado);
+				})
+				.sort((a, b) => {
+					const comparacaoNome = collator.compare(a.COLABORADOR_EXIBICAO, b.COLABORADOR_EXIBICAO);
+					return comparacaoNome === 0
+						? collator.compare(a.IDFIXO, b.IDFIXO)
+						: comparacaoNome * direcao;
+				});
+
+			const fragmento = document.createDocumentFragment();
+			filtrados.forEach(colaborador => fragmento.append(criarCardColaborador(colaborador)));
+			employeeList.replaceChildren(fragmento);
+
+			directorySummary.textContent = `Exibindo ${filtrados.length} de ${colaboradores.length} colaboradores`;
+			directoryStatus.textContent = filtrados.length ? "" : "Nenhum colaborador encontrado para esses filtros.";
+		}
+
+		function agruparColaboradores(registros) {
+			const grupos = new Map();
+
+			registros.forEach(registro => {
+				const id = String(registro.IDFIXO || "").trim();
+				if (!id) return;
+
+				if (!grupos.has(id)) {
+					grupos.set(id, {
+						IDFIXO: id,
+						COLABORADOR_EXIBICAO: registro.COLABORADOR_EXIBICAO || "",
+						AREA: registro.AREA || "",
+						COORDENADOR: registro.COORDENADOR || "",
+						NOME_ARQUIVO: registro.NOME_ARQUIVO || ""
+					});
+				}
+			});
+
+			return [...grupos.values()];
+		}
+
+		nameSearch.addEventListener("input", renderizarColaboradores);
+		areaFilter.addEventListener("change", renderizarColaboradores);
+		coordinatorFilter.addEventListener("change", renderizarColaboradores);
+		sortOrder.addEventListener("change", renderizarColaboradores);
+
+		fetch("./dados.json")
+			.then(response => {
+				if (!response.ok) throw new Error("Não foi possível carregar os dados.");
+				return response.json();
+			})
+			.then(registros => {
+				colaboradores = agruparColaboradores(registros);
+				preencherFiltro(areaFilter, colaboradores.map(item => item.AREA), "Todas as áreas");
+				preencherFiltro(coordinatorFilter, colaboradores.map(item => item.COORDENADOR), "Todos os coordenadores");
+				renderizarColaboradores();
+			})
+			.catch(() => {
+				directorySummary.textContent = "Os colaboradores não puderam ser carregados.";
+				directoryStatus.textContent = "Verifique se dados.json está disponível e tente novamente.";
+			});
+	</script>
 </body>
-
 </html>
