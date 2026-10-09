@@ -116,7 +116,9 @@ const idfixo = arquivo.split('_')[0];
 const colaborador = dados.filter(
     x => x.IDFIXO === idfixo
 );
-
+    
+const quantidadeTreinamentos = colaborador.length;
+    
     const info = colaborador[0];
 
     let obrigatoriosHTML = "";
@@ -173,7 +175,17 @@ const colaborador = dados.filter(
         <div class="info-item">
             <span>Nome</span>
             <strong>${info.COLABORADOR_EXIBICAO}</strong>
+            <div style="
+    margin-top:8px;
+    color:#8b7355;
+    font-size:13px;
+    font-weight:600;
+">
+    ${quantidadeTreinamentos} treinamentos encontrados
+</div>
         </div>
+
+        
 
         <div class="info-item">
             <span>Cargo</span>
@@ -189,6 +201,11 @@ const colaborador = dados.filter(
             <span>Coordenador</span>
             <strong>${info.COORDENADOR}</strong>
         </div>
+        
+        <div class="info-item">
+    <span>Última Atualização</span>
+    <strong>${info.ULTIMA_ATUALIZACAO_FORMATADA}</strong>
+</div>
 
     </div>
 
